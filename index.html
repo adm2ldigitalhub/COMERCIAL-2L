@@ -38,14 +38,14 @@ html, body {
 }
 
 .stage-outer{
-  position:fixed; inset:0; background:#000;
-  display:flex; align-items:center; justify-content:center;
+  position:fixed; inset:0; background:#000; overflow:hidden;
 }
 
 .stage{
-  width:var(--sw); height:var(--sh);
-  background:var(--bg); position:relative;
+  width:1600px; height:900px; flex:none;
+  background:var(--bg); position:absolute; left:50%; top:50%;
   overflow:hidden; transform-origin:center center;
+  transform:translate(-50%,-50%);
   box-shadow:0 0 80px rgba(0,0,0,.6);
   color:#fff;
 }
@@ -106,25 +106,40 @@ h1.section-title{
 .slide.active .reveal-pop{ opacity:1; transform:scale(1); }
 
 /* ---------- nav ---------- */
+:root{ --nb:clamp(40px, 7vmin, 56px); }
+html.portrait{ --nb:56px; }
+html,body{ touch-action:manipulation; }
 .nav-btn{
-  position:fixed; top:50%; transform:translateY(-50%);
-  width:56px; height:56px; border-radius:50%;
-  background:rgba(255,106,19,.85); border:none; outline:none;
-  -webkit-appearance:none; appearance:none; font-family:inherit;
+  position:fixed; top:calc(50% - var(--nb) / 2);
+  width:var(--nb); height:var(--nb); border-radius:50%;
+  background:rgba(255,106,19,.88); border:none; outline:none; padding:0;
+  -webkit-appearance:none; appearance:none; font-family:inherit; line-height:1;
   color:#0a0a0a; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; z-index:99999; font-size:22px; font-weight:700; transition:background .2s, opacity .2s, transform .2s;
-  user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+  cursor:pointer; z-index:99999; font-size:calc(var(--nb) * .4); font-weight:700;
+  transition:opacity .2s, filter .15s;
+  user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent;
   box-shadow:0 4px 16px rgba(0,0,0,.4);
 }
-.nav-btn:hover, .nav-btn:active{ background:rgba(255,106,19,1); transform:translateY(-50%) scale(.94); }
+.nav-btn:hover{ filter:brightness(1.08); }
+.nav-btn:active{ filter:brightness(1.2); }
 .nav-btn.disabled{ opacity:.25; pointer-events:none; }
 .nav-prev{ left:16px; }
 .nav-next{ right:16px; }
+/* celular em pé: setas embaixo, centralizadas, fora do slide */
+html.portrait .nav-btn{ top:auto; bottom:44px; }
+html.portrait .nav-prev{ left:calc(50% - var(--nb) - 18px); }
+html.portrait .nav-next{ right:calc(50% - var(--nb) - 18px); }
+.rotate-hint{
+  display:none; position:fixed; left:0; right:0; bottom:118px; text-align:center;
+  font:500 13px 'Poppins', system-ui, sans-serif; color:var(--muted); z-index:9998; pointer-events:none;
+}
+@media (max-width:700px){ html.portrait .rotate-hint{ display:block; } }
 
 .progress-wrap{
-  position:fixed; left:0; right:0; bottom:12px; display:flex;
+  position:fixed; left:0; right:0; bottom:16px; display:flex;
   justify-content:center; gap:6px; z-index:9999; pointer-events:none;
 }
+@media (max-height:520px){ .progress-wrap{ display:none; } }
 .progress-dot{ width:5px; height:5px; border-radius:50%; background:var(--line); transition:background .3s, width .3s; }
 .progress-dot.on{ background:var(--orange); width:16px; border-radius:3px; }
 
@@ -891,32 +906,24 @@ h1.section-title{
 <button type="button" class="nav-btn nav-prev" id="btnPrev" aria-label="Slide anterior">←</button>
 <button type="button" class="nav-btn nav-next" id="btnNext" aria-label="Próximo slide">→</button>
 <div class="progress-wrap" id="dots"></div>
+<div class="rotate-hint">Gire o celular para ver em tela cheia</div>
 
 <script>
 // ---------- fit stage to viewport, always 16:9 ----------
+const stageOuter = document.querySelector('.stage-outer');
 const stage = document.getElementById('stage');
 function fitStage(){
-  const scale = Math.min(window.innerWidth/1600, window.innerHeight/900);
-  stage.style.transform = 'scale(' + scale + ')';
+  const w = stageOuter.clientWidth || window.innerWidth;
+  const h = stageOuter.clientHeight || window.innerHeight;
+  const scale = Math.min(w/1600, h/900);
+  stage.style.transform = 'translate(-50%,-50%) scale(' + scale + ')';
+  document.documentElement.classList.toggle('portrait', h > w);
 }
-window.addEventListener('resize', fitStage);
-window.addEventListener('orientationchange', fitStage);
+function fitSoon(){ fitStage(); setTimeout(fitStage, 120); setTimeout(fitStage, 400); }
+window.addEventListener('resize', fitSoon);
+window.addEventListener('orientationchange', fitSoon);
+if(window.visualViewport) window.visualViewport.addEventListener('resize', fitStage);
 fitStage();
-
-// ---------- swipe support (mobile) ----------
-let touchStartX = 0, touchStartY = 0;
-document.addEventListener('touchstart', (e)=>{
-  touchStartX = e.changedTouches[0].clientX;
-  touchStartY = e.changedTouches[0].clientY;
-}, {passive:true});
-document.addEventListener('touchend', (e)=>{
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  const dy = e.changedTouches[0].clientY - touchStartY;
-  if(Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)*1.5){
-    if(dx < 0) goTo(current+1);
-    else goTo(current-1);
-  }
-}, {passive:true});
 
 // ---------- slide navigation ----------
 const slides = Array.from(document.querySelectorAll('.slide'));
@@ -940,21 +947,43 @@ function goTo(i){
   document.getElementById('btnNext').classList.toggle('disabled', current===slides.length-1);
   runCountUps(slides[current]);
 }
-function bindTap(el, handler){
-  let handledByTouch = false;
-  el.addEventListener('touchend', (e)=>{
-    handledByTouch = true;
-    e.preventDefault();
-    handler();
-    setTimeout(()=>{ handledByTouch = false; }, 500);
-  }, {passive:false});
-  el.addEventListener('click', ()=>{
-    if(handledByTouch) return;
-    handler();
-  });
+let navLock = 0;
+function step(dir){
+  const now = Date.now();
+  if(now - navLock < 350) return;   // evita pular vários slides de uma vez
+  navLock = now;
+  goTo(current + dir);
 }
-bindTap(document.getElementById('btnPrev'), ()=>goTo(current-1));
-bindTap(document.getElementById('btnNext'), ()=>goTo(current+1));
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+btnPrev.addEventListener('click', ()=>step(-1));
+btnNext.addEventListener('click', ()=>step(1));
+
+// Toque/arrastar no celular: usa as coordenadas do dedo (não depende do hit-test do iOS)
+let tStart = null;
+function hitBtn(btn, x, y){
+  if(btn.classList.contains('disabled')) return false;
+  const r = btn.getBoundingClientRect(), pad = 14;
+  return x >= r.left - pad && x <= r.right + pad && y >= r.top - pad && y <= r.bottom + pad;
+}
+document.addEventListener('touchstart', (e)=>{
+  const t = e.changedTouches[0];
+  tStart = { x:t.clientX, y:t.clientY, onUI: !!(e.target.closest && e.target.closest('a,button,input,textarea,select')) };
+}, {passive:true});
+document.addEventListener('touchend', (e)=>{
+  if(!tStart) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - tStart.x, dy = t.clientY - tStart.y;
+  const s = tStart; tStart = null;
+  if(Math.hypot(dx, dy) < 18){
+    if(hitBtn(btnPrev, t.clientX, t.clientY)){ if(e.cancelable) e.preventDefault(); step(-1); }
+    else if(hitBtn(btnNext, t.clientX, t.clientY)){ if(e.cancelable) e.preventDefault(); step(1); }
+    return;
+  }
+  if(!s.onUI && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.6){
+    step(dx < 0 ? 1 : -1);
+  }
+}, {passive:false});
 document.addEventListener('keydown', (e)=>{
   if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); goTo(current+1); }
   else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); goTo(current-1); }
