@@ -1092,6 +1092,29 @@ function updateAvulsos(){
   totalBox.classList.add('pulse');
   setTimeout(()=>totalBox.classList.remove('pulse'), 260);
 }
+
+// ---------- celular girou? recarrega pra o iOS refazer a área de toque ----------
+(function(){
+  const isTouch = window.matchMedia ? window.matchMedia('(pointer:coarse)').matches : ('ontouchstart' in window);
+  // retoma o slide em que estava antes de girar
+  const m = /^#s(\d+)$/.exec(location.hash);
+  if(m){
+    const i = parseInt(m[1], 10) - 1;
+    if(i > 0 && i < slides.length) goTo(i);
+    try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  }
+  if(!isTouch) return;
+  let lastPortrait = window.innerHeight > window.innerWidth;
+  function onTurn(){
+    const p = window.innerHeight > window.innerWidth;
+    if(p === lastPortrait) return;
+    lastPortrait = p;
+    try{ history.replaceState(null, '', location.pathname + location.search + '#s' + (current + 1)); }catch(e){}
+    setTimeout(()=>location.reload(), 300);
+  }
+  window.addEventListener('orientationchange', ()=>setTimeout(onTurn, 350));
+  window.addEventListener('resize', ()=>setTimeout(onTurn, 350));
+})();
 </script>
 </body>
 </html>
