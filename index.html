@@ -378,6 +378,12 @@ html.on-menu .nav-btn, html.on-menu .progress-wrap{ display:none; }
 .menu-card .mg{ display:inline-flex; align-items:center; gap:10px; color:var(--orange); font-weight:700; font-size:16px; }
 .about-hero{ white-space:nowrap; font-size:84px; font-weight:800; line-height:1.06; letter-spacing:-.03em; text-align:center; margin:28px 0 26px; position:relative; z-index:2; }
 .about-hero span{ color:var(--orange); }
+.result-row.five{ gap:14px; }
+.result-row.five .result-card{ padding:18px 16px; min-width:0; }
+.result-row.five .result-card .store{ font-size:15px; }
+.result-row.five .result-stat .l{ font-size:11px; }
+.result-row.five .result-stat .v{ font-size:14.5px; }
+.result-note{ margin:18px 0 0; max-width:1100px; font-size:12px; line-height:1.55; color:var(--muted2); position:relative; z-index:2; }
 </style>
 </head>
 <body>
@@ -665,6 +671,7 @@ html.on-menu .nav-btn, html.on-menu .progress-wrap{ display:none; }
             <div class="result-source">Fonte: relatório de performance 2L Digital Hub</div>
           </div>
         </div>
+        <p class="result-note reveal" style="--i:9">O investimento soma todas as campanhas do mês, como mensagem, alcance e visualização. O custo por conversa considera só as campanhas de mensagem.</p>
       </div>
       <div class="footer-bar">
         <div>2L Digital Hub — Apresentação Comercial</div>
@@ -1175,8 +1182,24 @@ html.on-menu .nav-btn, html.on-menu .progress-wrap{ display:none; }
         <div class="kicker reveal" style="--i:0">O que fazemos</div>
         <h1 class="section-title reveal" style="--i:1">Tráfego Pago</h1>
         <p class="section-sub reveal" style="--i:2">Estruturamos e otimizamos campanhas no Meta Ads e Google Ads com foco em um único objetivo: gerar leads qualificados e vender mais. Acompanhamento constante, ajustes semanais e decisões guiadas por dado, não por achismo.</p>
-        <div class="result-row">
+        <div class="result-row five">
           <div class="result-card reveal" style="--i:3">
+            <div class="store">Gusmann Comércio</div>
+            <div class="period">Agosto de 2026 · Meta Ads</div>
+            <div class="result-stat"><div class="l">Investimento em mídia</div><div class="v" data-countup="994" data-currency="1" data-dec="0">R$ 0</div></div>
+            <div class="result-stat"><div class="l">Conversas no WhatsApp</div><div class="v" data-countup="238">0</div></div>
+            <div class="result-stat"><div class="l">Custo por conversa</div><div class="v" data-countup="3.64" data-currency="1">R$ 0,00</div></div>
+            <div class="result-source">Fonte: relatório de performance 2L Digital Hub</div>
+          </div>
+          <div class="result-card reveal" style="--i:4">
+            <div class="store">One Store</div>
+            <div class="period">Agosto de 2026 · Meta Ads</div>
+            <div class="result-stat"><div class="l">Investimento em mídia</div><div class="v" data-countup="1701" data-currency="1" data-dec="0">R$ 0</div></div>
+            <div class="result-stat"><div class="l">Conversas no WhatsApp</div><div class="v" data-countup="450">0</div></div>
+            <div class="result-stat"><div class="l">Custo por conversa</div><div class="v" data-countup="3.78" data-currency="1">R$ 0,00</div></div>
+            <div class="result-source">Fonte: relatório de performance 2L Digital Hub</div>
+          </div>
+          <div class="result-card reveal" style="--i:5">
             <div class="store">Valoriza Veículos</div>
             <div class="period">Agosto de 2026 · Meta + Google Ads</div>
             <div class="result-stat"><div class="l">Investimento em mídia</div><div class="v" data-countup="6098.39" data-currency="1">R$ 0,00</div></div>
@@ -1184,7 +1207,7 @@ html.on-menu .nav-btn, html.on-menu .progress-wrap{ display:none; }
             <div class="result-stat"><div class="l">Custo por conversa</div><div class="v" data-countup="7.78" data-currency="1">R$ 0,00</div></div>
             <div class="result-source">Fonte: relatório de performance 2L Digital Hub</div>
           </div>
-          <div class="result-card reveal" style="--i:4">
+          <div class="result-card reveal" style="--i:6">
             <div class="store">Nobi Veículos</div>
             <div class="period">Agosto de 2026 · Meta Ads</div>
             <div class="result-stat"><div class="l">Investimento em mídia</div><div class="v" data-countup="2471.86" data-currency="1">R$ 0,00</div></div>
@@ -1192,7 +1215,7 @@ html.on-menu .nav-btn, html.on-menu .progress-wrap{ display:none; }
             <div class="result-stat"><div class="l">Custo por conversa</div><div class="v" data-countup="5.95" data-currency="1">R$ 0,00</div></div>
             <div class="result-source">Fonte: relatório de performance 2L Digital Hub</div>
           </div>
-          <div class="result-card reveal" style="--i:5">
+          <div class="result-card reveal" style="--i:7">
             <div class="store">UK Multimarcas</div>
             <div class="period">Agosto de 2026 · Meta + Google Ads</div>
             <div class="result-stat"><div class="l">Investimento em mídia</div><div class="v" data-countup="6176.17" data-currency="1">R$ 0,00</div></div>
@@ -1200,15 +1223,8 @@ html.on-menu .nav-btn, html.on-menu .progress-wrap{ display:none; }
             <div class="result-stat"><div class="l">Custo por conversa</div><div class="v" data-countup="5.97" data-currency="1">R$ 0,00</div></div>
             <div class="result-source">Fonte: relatório de performance 2L Digital Hub</div>
           </div>
-          <div class="result-card reveal" style="--i:6">
-            <div class="store">Bomfim Multimarcas</div>
-            <div class="period">Agosto de 2026 · Meta Ads</div>
-            <div class="result-stat"><div class="l">Investimento em mídia</div><div class="v" data-countup="1584.00" data-currency="1">R$ 0,00</div></div>
-            <div class="result-stat"><div class="l">Conversas no WhatsApp</div><div class="v" data-countup="170">0</div></div>
-            <div class="result-stat"><div class="l">Custo por conversa</div><div class="v" data-countup="8.36" data-currency="1">R$ 0,00</div></div>
-            <div class="result-source">Fonte: relatório de performance 2L Digital Hub</div>
-          </div>
         </div>
+        <p class="result-note reveal" style="--i:9">O investimento soma todas as campanhas do mês, como mensagem, alcance e visualização. O custo por conversa considera só as campanhas de mensagem.</p>
       </div>
       <div class="footer-bar">
         <div>2L Digital Hub — Apresentação Comercial</div>
@@ -1679,8 +1695,9 @@ if(/[?&]debug=1/.test(location.search)){
 }
 
 // ---------- count-up numbers ----------
-function formatBRL(v){
-  return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+function formatBRL(v, dec){
+  dec = (dec === undefined ? 2 : dec);
+  return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:dec, maximumFractionDigits:dec});
 }
 function runCountUps(slideEl){
   const els = slideEl.querySelectorAll('[data-countup]');
@@ -1689,6 +1706,7 @@ function runCountUps(slideEl){
     el.dataset.done = '1';
     const target = parseFloat(el.dataset.countup);
     const isCurrency = el.dataset.currency === '1';
+    const dec = el.dataset.dec !== undefined ? parseInt(el.dataset.dec, 10) : 2;
     const suffixEl = el.querySelector('span');
     const suffixHTML = suffixEl ? suffixEl.outerHTML : '';
     const start = performance.now();
@@ -1697,9 +1715,9 @@ function runCountUps(slideEl){
       const p = Math.min((now-start)/dur, 1);
       const eased = 1 - Math.pow(1-p, 3);
       const val = target * eased;
-      el.innerHTML = (isCurrency ? formatBRL(val) : Math.round(val).toLocaleString('pt-BR')) + suffixHTML;
+      el.innerHTML = (isCurrency ? formatBRL(val, dec) : Math.round(val).toLocaleString('pt-BR')) + suffixHTML;
       if(p<1) requestAnimationFrame(frame);
-      else el.innerHTML = (isCurrency ? formatBRL(target) : Math.round(target).toLocaleString('pt-BR')) + suffixHTML;
+      else el.innerHTML = (isCurrency ? formatBRL(target, dec) : Math.round(target).toLocaleString('pt-BR')) + suffixHTML;
     }
     requestAnimationFrame(frame);
   });
